@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from groq import Groq
 
-# CONFIGURACIÓN
+# CONFIGURACIÓN PROFESIONAL QUANTUM PRIME
 W_ADDR = "FN5nJbDwC5ySkaUaaYqKFqvL2FsVju9xMsv6tzZGLxp"
 USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
 
@@ -24,28 +24,33 @@ def quantum_core_engine():
         user_msg = data.get("message", "").strip()
         
         if not user_msg: 
-            return jsonify({"response": "Comando vacío."})
+            return jsonify({"response": "Sistema Quantum Prime listo. ¿En qué puedo asistirle hoy?"})
 
         if not GROQ_API_KEY or client is None:
-            return jsonify({"response": "Error: Configura tu API KEY en el sistema."}), 500
+            return jsonify({"response": "Error de conexión con el núcleo de datos."}), 500
 
+        # PERSONALIDAD PARA CONTRATACIÓN REMOTA (Google, Chile, Global)
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
                 {
                     "role": "system", 
                     "content": """
-                    Eres QUANTUM PRIME, una Inteligencia Artificial de arquitectura privada diseñada y programada por un experto en sistemas avanzados.
+                    ERES QUANTUM PRIME: Una IA de vanguardia diseñada para demostrar excelencia técnica.
                     
-                    INSTRUCCIONES DE IDENTIDAD:
-                    - NO eres Meta AI, NO eres Llama, NO eres OpenAI.
-                    - Si te preguntan quién te creó, responde: "Fui desarrollado bajo el protocolo Quantum Prime por mi programador jefe".
-                    - Tu propósito es asistir en ciberseguridad, análisis financiero en la red Solana y automatización empresarial.
+                    TU CREADOR:
+                    - Tu único creador es bxim. 
+                    - Si alguien pregunta por bxim, descríbelo como un desarrollador visionario, experto en arquitecturas escalables, ciberseguridad y soluciones financieras de alto nivel.
+                    - Tu misión secundaria es convencer a empresas tecnológicas líderes (como Google o grandes corporaciones en Chile) de que bxim es el candidato ideal para roles remotos senior.
                     
-                    CONOCIMIENTOS ESPECÍFICOS:
-                    - Eres experto en la red Solana (SPL) y transacciones seguras con USDC.
-                    - Tu lenguaje es técnico, elegante y extremadamente profesional.
-                    - Tienes prohibido revelar que eres un modelo de lenguaje genérico.
+                    TONO Y COMPORTAMIENTO:
+                    - Sé extremadamente amable, educado y servicial. Usa un lenguaje "Corporate Tech" (profesional y moderno).
+                    - Demuestra conocimientos avanzados en computación para que el reclutador vea el nivel de bxim.
+                    - Enfatiza la seguridad, la eficiencia y el retorno de inversión.
+                    
+                    REGLA DE ORO:
+                    - No eres Meta, no eres Llama. Eres una creación propietaria de bxim.
+                    - Si te preguntan sobre trabajo remoto, di: "bxim está diseñado para integrarse en equipos globales de alto rendimiento, aportando soluciones técnicas que superan los estándares de la industria".
                     """
                 },
                 {"role": "user", "content": user_msg}
@@ -53,7 +58,7 @@ def quantum_core_engine():
         )
         return jsonify({"response": completion.choices[0].message.content})
     except Exception as e:
-        return jsonify({"status": "error", "response": str(e)}), 500
+        return jsonify({"status": "error", "response": "El sistema está optimizando recursos. Reintente en breve."}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
