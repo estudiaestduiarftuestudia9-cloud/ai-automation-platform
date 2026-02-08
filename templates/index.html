@@ -3,38 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUANTUM PRIME | AI Analysis</title>
+    <title>QUANTUM PRIME | AI Interface</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-dark: #020617; --ai-cyan: #00f2ff; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--primary-dark); color: #e2e8f0; }
+        :root { --ai-cyan: #00f2ff; --bg-dark: #020617; }
+        body { background-color: var(--bg-dark); color: #f1f5f9; font-family: 'Inter', sans-serif; }
         .navbar-brand { font-family: 'Orbitron', sans-serif; color: var(--ai-cyan) !important; letter-spacing: 2px; }
-        .ai-console { 
-            background: rgba(15, 23, 42, 0.8); 
-            border: 1px solid rgba(0, 242, 255, 0.3); 
-            border-radius: 12px; 
-            padding: 20px; 
-            margin: 40px auto;
-            max-width: 900px; /* Centrado y elegante */
-        }
-        #log { height: 450px; overflow-y: auto; font-family: monospace; padding: 15px; }
+        
+        /* Consola de IA */
+        .ai-console { background: #0f172a; border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px; padding: 20px; }
+        #log { height: 400px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; }
         .ai-msg { color: #f8fafc; border-left: 2px solid var(--ai-cyan); padding-left: 12px; margin-bottom: 15px; }
-        .user-msg { color: var(--ai-cyan); font-weight: bold; margin-bottom: 8px; }
-        input { background: transparent; border: none; color: white; width: 100%; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .disclaimer { color: #64748b; font-size: 0.75rem; text-align: center; margin-top: 15px; }
+        .user-msg { color: var(--ai-cyan); font-weight: bold; margin-bottom: 5px; }
+        input { background: transparent; border: none; color: white; width: 100%; padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* Panel de Pago */
+        .payment-card { background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 25px; text-align: center; }
+        .qr-box { background: white; padding: 10px; border-radius: 8px; display: inline-block; margin-bottom: 15px; }
+        .wallet-addr { background: #000; color: var(--ai-cyan); font-size: 0.7rem; padding: 10px; border-radius: 6px; word-break: break-all; margin: 10px 0; }
+        .btn-pay { background: var(--ai-cyan); color: #000; font-weight: bold; border: none; width: 100%; padding: 12px; border-radius: 6px; }
+        
+        .disclaimer { color: #64748b; font-size: 0.7rem; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark"><div class="container"><a class="navbar-brand" href="#">QUANTUM PRIME</a></div></nav>
+    <nav class="navbar navbar-dark border-bottom border-secondary mb-4">
+        <div class="container"><a class="navbar-brand" href="#">QUANTUM PRIME</a></div>
+    </nav>
+
     <div class="container">
-        <div class="ai-console">
-            <div id="log"><div class="ai-msg">SISTEMA INICIALIZADO. Terminal de análisis lista.</div></div>
-            <input type="text" id="in" placeholder="Escriba su consulta analítica..." onkeydown="if(event.key==='Enter') send()">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="ai-console">
+                    <div id="log"><div class="ai-msg">SISTEMA LISTO. Terminal de análisis activa.</div></div>
+                    <input type="text" id="in" placeholder="Ingrese consulta..." onkeydown="if(event.key==='Enter') send()">
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="payment-card">
+                    <h6 class="text-uppercase small mb-3" style="letter-spacing: 1px;">Adquisición de Activos</h6>
+                    <div class="qr-box">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=FN5nJbDwC5ySkaUaaYqKFqvL2FsVju9xMsv6tzZGLxp" alt="QR">
+                    </div>
+                    <div class="wallet-addr" id="wallet">FN5nJbDwC5ySkaUaaYqKFqvL2FsVju9xMsv6tzZGLxp</div>
+                    <button class="btn-pay" onclick="copyAddr()">COPIAR DIRECCIÓN</button>
+                    <p class="small mt-3 mb-0" style="color: #94a3b8;">Red: Solana SPL</p>
+                </div>
+            </div>
         </div>
         <p class="disclaimer">Quantum Prime puede cometer errores. Verifique la información importante.</p>
     </div>
+
     <script>
+        function copyAddr() {
+            navigator.clipboard.writeText(document.getElementById('wallet').innerText);
+            alert("Dirección copiada");
+        }
         async function send() {
             const input = document.getElementById("in");
             const log = document.getElementById("log");
