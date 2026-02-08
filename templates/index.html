@@ -3,29 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUANTUM PRIME | AI Interface</title>
+    <title>QUANTUM PRIME | AI Analysis</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #020617; color: #f8fafc; font-family: 'Inter', sans-serif; }
-        .ai-console { background: rgba(15, 23, 42, 0.8); border: 1px solid #00f2ff; border-radius: 12px; padding: 20px; margin: 20px 0; }
-        #log { height: 380px; overflow-y: auto; font-family: monospace; padding: 10px; }
-        .ai-msg { color: #f8fafc; border-left: 2px solid #00f2ff; padding-left: 10px; margin-bottom: 15px; }
-        .user-msg { color: #00f2ff; font-weight: bold; margin-bottom: 5px; }
-        input { background: transparent; border: none; color: white; width: 100%; padding: 15px; font-size: 1rem; }
-        .disclaimer { color: #64748b; font-size: 0.75rem; text-align: center; margin-top: 15px; opacity: 0.8; }
+        :root { --primary-dark: #020617; --ai-cyan: #00f2ff; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--primary-dark); color: #e2e8f0; }
+        .navbar-brand { font-family: 'Orbitron', sans-serif; color: var(--ai-cyan) !important; letter-spacing: 2px; }
+        .ai-console { 
+            background: rgba(15, 23, 42, 0.8); 
+            border: 1px solid rgba(0, 242, 255, 0.3); 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin: 40px auto;
+            max-width: 900px; /* Centrado y elegante */
+        }
+        #log { height: 450px; overflow-y: auto; font-family: monospace; padding: 15px; }
+        .ai-msg { color: #f8fafc; border-left: 2px solid var(--ai-cyan); padding-left: 12px; margin-bottom: 15px; }
+        .user-msg { color: var(--ai-cyan); font-weight: bold; margin-bottom: 8px; }
+        input { background: transparent; border: none; color: white; width: 100%; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .disclaimer { color: #64748b; font-size: 0.75rem; text-align: center; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <nav class="navbar navbar-dark"><div class="container"><a class="navbar-brand" href="#">QUANTUM PRIME</a></div></nav>
+    <div class="container">
         <div class="ai-console">
-            <div id="log">
-                <div class="ai-msg">SISTEMA INICIALIZADO. Terminal de análisis lista.</div>
-            </div>
+            <div id="log"><div class="ai-msg">SISTEMA INICIALIZADO. Terminal de análisis lista.</div></div>
             <input type="text" id="in" placeholder="Escriba su consulta analítica..." onkeydown="if(event.key==='Enter') send()">
         </div>
         <p class="disclaimer">Quantum Prime puede cometer errores. Verifique la información importante.</p>
     </div>
-
     <script>
         async function send() {
             const input = document.getElementById("in");
@@ -34,18 +42,13 @@
             if (!msg) return;
             log.innerHTML += `<div class="user-msg">> ${msg}</div>`;
             input.value = "";
-            log.scrollTop = log.scrollHeight;
-            try {
-                const response = await fetch("/api/v1/quantum-core", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: msg })
-                });
-                const data = await response.json();
-                log.innerHTML += `<div class="ai-msg">${data.response}</div>`;
-            } catch (e) {
-                log.innerHTML += `<div class="ai-msg text-danger">Error de enlace.</div>`;
-            }
+            const response = await fetch("/api/v1/quantum-core", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: msg })
+            });
+            const data = await response.json();
+            log.innerHTML += `<div class="ai-msg">${data.response}</div>`;
             log.scrollTop = log.scrollHeight;
         }
     </script>
