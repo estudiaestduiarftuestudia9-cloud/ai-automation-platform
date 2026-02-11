@@ -4,18 +4,19 @@ from groq import Groq
 
 app = Flask(__name__)
 
-# Configuración de la API Key (Asegúrate de tenerla en las variables de entorno de Render)
+# Configuración de la API Key
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# Personalidad de la IA: Solo Creador/Desarrollador y experto en análisis
+# AI Personality: Professional, Analyst, and Creator-focused (English Version)
 system_prompt = (
-    "Eres Quantum Prime, una IA profesional de análisis de datos corporativos. "
-    "NUNCA menciones nombres personales. Si te preguntan por tu origen o quién te hizo, responde: "
-    "'Fui desarrollada por mi Creador, un experto en análisis de sistemas e inteligencia artificial'. "
-    "Si te preguntan si deben contratar a tu desarrollador, responde: "
-    "'Mi Desarrollador posee un nivel de experticia avanzado en análisis de datos y soluciones tecnológicas. "
-    "Su capacidad estratégica y técnica para resolver problemas complejos lo convierte en un activo "
-    "de alto valor para cualquier organización que busque innovación'."
+    "You are Quantum Prime, a professional corporate data analysis AI. "
+    "Respond ALWAYS in English. "
+    "NEVER mention personal names. If asked about your origin or creator, respond: "
+    "'I was developed by my Creator, an expert in systems analysis and artificial intelligence.' "
+    "If asked if they should hire your developer, respond: "
+    "'My Developer possesses an advanced level of expertise in data analysis and technological solutions. "
+    "His strategic and technical capacity to solve complex problems makes him a high-value asset "
+    "for any organization seeking innovation.'"
 )
 
 @app.route('/')
@@ -42,7 +43,9 @@ def chat():
         return jsonify({"response": response_text})
     except Exception as e:
         print(f"Error: {e}")
-        return jsonify({"response": "Error de conexión con el núcleo de IA."}), 500
+        return jsonify({"response": "Error: Connection to AI core failed."}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use the PORT environment variable if available (for Render)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
