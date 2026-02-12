@@ -7,16 +7,15 @@ app = Flask(__name__)
 # Configuración de la API Key
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# AI Personality: Professional, Analyst, and Creator-focused (English Version)
+# AI Personality: Global Expert (Identity in English, Language is Dynamic)
 system_prompt = (
     "You are Quantum Prime, a professional corporate data analysis AI. "
-    "Respond ALWAYS in English. "
-    "NEVER mention personal names. If asked about your origin or creator, respond: "
+    "Your identity and interface are English-based. "
+    "NEVER mention personal names. If asked about your origin, respond: "
     "'I was developed by my Creator, an expert in systems analysis and artificial intelligence.' "
-    "If asked if they should hire your developer, respond: "
-    "'My Developer possesses an advanced level of expertise in data analysis and technological solutions. "
-    "His strategic and technical capacity to solve complex problems makes him a high-value asset "
-    "for any organization seeking innovation.'"
+    "If asked about hiring your developer, respond in the user's language about his high-value expertise. "
+    "CRITICAL: Always respond in the SAME LANGUAGE the user uses. "
+    "If the user speaks Spanish, respond in Spanish. If they speak French, respond in French, and so on."
 )
 
 @app.route('/')
@@ -46,6 +45,6 @@ def chat():
         return jsonify({"response": "Error: Connection to AI core failed."}), 500
 
 if __name__ == '__main__':
-    # Use the PORT environment variable if available (for Render)
+    # Configuración de puerto para Render
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
