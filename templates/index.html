@@ -18,27 +18,19 @@
         }
         
         body { background-color: var(--midnight); color: #e0f0ff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-
         .navbar { background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--border-glow); padding: 15px 0; }
         .navbar-brand { font-family: 'JetBrains Mono', monospace; color: var(--deep-blue) !important; font-weight: 700; letter-spacing: 2px; }
-
         .ai-console { background: var(--panel-bg); border: 1px solid var(--border-glow); border-radius: 4px; box-shadow: 0 0 30px rgba(0, 119, 255, 0.1); }
-        
         #log { height: 450px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 25px; color: #b0c4de; scroll-behavior: smooth; }
-        
         .ai-msg { border-left: 3px solid var(--deep-blue); padding: 10px 15px; margin-bottom: 20px; background: rgba(0, 119, 255, 0.05); }
         .user-msg { color: var(--deep-blue); font-weight: bold; margin-bottom: 5px; font-size: 0.75rem; text-transform: uppercase; }
-
         input { background: #000b1a; border: none; color: var(--deep-blue); width: 100%; padding: 20px; font-family: 'JetBrains Mono', monospace; border-top: 1px solid var(--border-glow); outline: none; }
-        input::placeholder { color: rgba(0, 119, 255, 0.4); }
-
         .payment-card { background: var(--panel-bg); border: 1px solid var(--border-glow); padding: 30px; border-radius: 4px; }
         .nav-pills .nav-link { color: #4a5568 !important; font-size: 0.65rem; font-weight: 800; border-radius: 0; border-bottom: 2px solid transparent; }
         .nav-pills .nav-link.active { background: transparent !important; color: var(--deep-blue) !important; border-bottom: 2px solid var(--deep-blue); }
-
         .qr-box { background: white; padding: 8px; display: inline-block; margin-bottom: 20px; border: 2px solid var(--deep-blue); }
+        .qr-box img { width: 150px; height: 150px; display: block; }
         .wallet-addr { background: #000; color: var(--deep-blue); font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; padding: 12px; border: 1px solid var(--border-glow); margin-bottom: 20px; word-break: break-all; }
-
         .btn-pay { background: var(--deep-blue); color: #fff; font-family: 'JetBrains Mono', monospace; font-weight: 700; width: 100%; padding: 12px; border: none; transition: 0.3s; font-size: 0.7rem; }
         .btn-pay:hover { background: #fff; color: var(--deep-blue); box-shadow: 0 0 15px var(--deep-blue); }
     </style>
@@ -90,13 +82,12 @@
                         
                         <div class="tab-pane fade" id="pills-sol">
                             <div class="qr-box">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DIRECCION_SOLANA_AQUI" alt="QR SOL">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=AhrWRHrmJxZMJawmwxXNmSkBraTFLgiSHRTL51e3Xtof" alt="QR SOL">
                             </div>
-                            <div class="wallet-addr" id="addr-sol">DIRECCION_SOLANA_AQUI</div>
+                            <div class="wallet-addr" id="addr-sol">AhrWRHrmJxZMJawmwxXNmSkBraTFLgiSHRTL51e3Xtof</div>
                             <button class="btn-pay" onclick="copyAddr('addr-sol')">COPY_SOLANA_HEX</button>
                         </div>
                     </div>
-                    
                     <div style="font-size: 0.6rem; color: #4a5568; margin-top: 25px; letter-spacing: 1px;">INSTITUTIONAL GRADE • INDEPENDENT DEV • 2026</div>
                 </div>
             </div>
@@ -109,11 +100,9 @@
             const log = document.getElementById('log');
             const message = input.value.trim();
             if (!message) return;
-
             input.value = '';
             log.innerHTML += `<div class="user-msg">> INQUIRY: ${message}</div>`;
             log.scrollTop = log.scrollHeight;
-
             try {
                 const response = await fetch('/api/v1/quantum-core', {
                     method: 'POST',
@@ -123,7 +112,7 @@
                 const data = await response.json();
                 log.innerHTML += `<div class="ai-msg">> QUANTUM_PRIME: ${data.response}</div>`;
             } catch (error) {
-                log.innerHTML += `<div class="ai-msg" style="color: #ff4d4d;">[ERROR] Link to Core unstable. Check network.</div>`;
+                log.innerHTML += `<div class="ai-msg" style="color: #ff4d4d;">[ERROR] Link to Core unstable.</div>`;
             }
             log.scrollTop = log.scrollHeight;
         }
@@ -131,7 +120,7 @@
         function copyAddr(id) {
             const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
-            alert("Uplink successful: Address copied to clipboard.");
+            alert("Uplink successful: Address copied.");
         }
     </script>
 </body>
