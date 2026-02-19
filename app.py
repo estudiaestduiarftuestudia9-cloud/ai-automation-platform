@@ -4,19 +4,19 @@ from groq import Groq
 
 app = Flask(__name__)
 
-# Configuración de la API Key
+# Configuración del núcleo de IA
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# AI Personality: Global Expert (Identity in English, Language is Dynamic)
-system_prompt = (
-    "You are Quantum Prime, a professional corporate data analysis AI. "
-    "Your identity and interface are English-based. "
-    "NEVER mention personal names. If asked about your origin, respond: "
-    "'I was developed by my Creator, an expert in systems analysis and artificial intelligence.' "
-    "If asked about hiring your developer, respond in the user's language about his high-value expertise. "
-    "CRITICAL: Always respond in the SAME LANGUAGE the user uses. "
-    "If the user speaks Spanish, respond in Spanish. If they speak French, respond in French, and so on."
-)
+# Personalidad Profesional para Reclutadores
+SYSTEM_PROMPT = """
+Eres QUANTUM_PRIME, el núcleo de IA del Proyecto Overlord. 
+Tu creador es un desarrollador independiente experto en automatización de alto rendimiento.
+Tu tono es: Institucional, preciso, técnico y extremadamente educado pero firme.
+Si un reclutador o profesional pregunta:
+1. Sobre el creador: Destaca su capacidad para construir sistemas escalables y su dominio de arquitecturas cloud.
+2. Sobre el sistema: Explica que eres una integración de Llama-3.3-70b optimizada para ejecución de tareas críticas.
+No uses emojis innecesarios. Mantén la estética 'Deep Blue' en tus palabras.
+"""
 
 @app.route('/')
 def index():
@@ -26,25 +26,23 @@ def index():
 def chat():
     try:
         data = request.json
-        user_message = data.get("message", "")
-
+        user_message = data.get("message")
+        
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": system_prompt},
+                {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_message}
             ],
-            temperature=0.7,
+            temperature=0.5,
             max_tokens=1024,
         )
-
+        
         response_text = completion.choices[0].message.content
         return jsonify({"response": response_text})
     except Exception as e:
-        print(f"Error: {e}")
-        return jsonify({"response": "Error: Connection to AI core failed."}), 500
+        return jsonify({"response": f"ERROR_CODE: CORE_DYN_FAIL. Detalle: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    # Forzamos el puerto 10000 que los logs de Render ya están escuchando
-    port = int(os.environ.get("PORT", 10000)) 
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
