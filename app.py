@@ -45,6 +45,6 @@ def chat():
         return jsonify({"response": "Error: Connection to AI core failed."}), 500
 
 if __name__ == '__main__':
-    # Configuración de puerto para Render
-    port = int(os.environ.get("PORT", 5000))
+    # Forzamos el puerto 10000 que los logs de Render ya están escuchando
+    port = int(os.environ.get("PORT", 10000)) 
     app.run(host='0.0.0.0', port=port)
