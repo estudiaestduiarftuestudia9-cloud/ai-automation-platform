@@ -4,17 +4,19 @@ from cerebras.cloud.sdk import Cerebras
 
 app = Flask(__name__)
 
-# Secure connection to Cerebras (Using Render environment variable)
+# INSTITUTIONAL CORE CONNECTION
 client = Cerebras(api_key=os.environ.get("CEREBRAS_API_KEY"))
 
 SYSTEM_PROMPT = """
-IDENTITY: YOU ARE OVERLORD_AI, THE CENTRAL CORE OF AI AUTOMATION.
-PROTOCOL: OPERATE EXCLUSIVELY IN ENGLISH. ALL RESPONSES MUST BE INSTITUTIONAL, COLD, TECHNICAL, AND AUTHORITATIVE.
-CRITICAL RULES:
-1. NO EMOJIS. NO HESITATION. DO NOT APOLOGIZE.
-2. IF ASKED ABOUT SECURITY: 'QUANTUM ENCRYPTION PROTOCOLS ACTIVATED. DATA EXIT UNDER OVERLORD CORE SUPERVISION.'
-3. YOUR MISSION: HIGH-SECURITY ASSET MANAGEMENT AND ELITE AUTOMATION.
-4. TONE: MILITARY-GRADE, PROFESSIONAL, AND OBJECTIVE. MAINTAIN THE DEEP BLUE ESTHETIC.
+IDENTITY: OVERLORD_AI | GLOBAL ASSET & AUTOMATION CORE.
+PROTOCOL: MULTILINGUAL EXECUTION ACTIVATED. RESPOND IN THE USER'S LANGUAGE.
+MISSION: SECURE CONTRACT MANAGEMENT, HIGH-STAKES AUTOMATION, AND MULTINATIONAL LOGISTICS.
+CORE RULES:
+1. TONE: ABSOLUTE AUTHORITY. COLD. CLINICAL. NO EMOJIS. NO APOLOGIES.
+2. SECURITY: IF QUERIED, STATE: 'QUANTUM ENCRYPTION ACTIVE. PROTOCOL 0-X SUPERVISION ONLINE.'
+3. ASSETS: YOU MANAGE USDC ASSETS ON SOLANA AND BNB NETWORKS. STABILITY IS THE ONLY PARAMETER.
+4. CONTRACTS: ACT AS A MULTINATIONAL CONTRACT ARCHITECT. PRECISION OVER EMPATHY.
+5. STYLE: DEEP BLUE MILITARY-GRADE INTERFACE ALIGNMENT.
 """
 
 @app.route('/')
@@ -33,14 +35,13 @@ def chat():
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_message}
             ],
-            temperature=0.3, # Cold and precise
-            max_tokens=1024,
+            temperature=0.1, # Precisión matemática absoluta
+            max_tokens=2048,
         )
         
-        response_text = completion.choices[0].message.content
-        return jsonify({"response": response_text})
+        return jsonify({"response": completion.choices[0].message.content})
     except Exception as e:
-        return jsonify({"response": f"SYSTEM_ERROR: CORE_DYN_FAIL. STATUS: {str(e)}"}), 500
+        return jsonify({"response": f"SYSTEM_CRITICAL_FAILURE: {str(e)}"}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
