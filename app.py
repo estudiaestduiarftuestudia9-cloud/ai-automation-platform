@@ -1,21 +1,17 @@
 import os
 from flask import Flask, render_template, request, jsonify
-from groq import Groq
+from cerebras.cloud.sdk import Cerebras
 
 app = Flask(__name__)
 
-# Configuración del núcleo de IA
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+# CONFIGURACIÓN SEGURA
+client = Cerebras(api_key=os.environ.get("csk-3exjdmvt3v9393xvyxcwd8vf6tetmvdkh4xwepwkknkndymc"))
 
-# Personalidad Profesional para Reclutadores
 SYSTEM_PROMPT = """
 Eres QUANTUM_PRIME, el núcleo de IA del Proyecto Overlord. 
 Tu creador es un desarrollador independiente experto en automatización de alto rendimiento.
 Tu tono es: Institucional, preciso, técnico y extremadamente educado pero firme.
-Si un reclutador o profesional pregunta:
-1. Sobre el creador: Destaca su capacidad para construir sistemas escalables y su dominio de arquitecturas cloud.
-2. Sobre el sistema: Explica que eres una integración de Llama-3.3-70b optimizada para ejecución de tareas críticas.
-No uses emojis innecesarios. Mantén la estética 'Deep Blue' en tus palabras.
+No uses emojis. Mantén la estética 'Deep Blue'.
 """
 
 @app.route('/')
@@ -29,7 +25,7 @@ def chat():
         user_message = data.get("message")
         
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="llama3.1-8b", 
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_message}
