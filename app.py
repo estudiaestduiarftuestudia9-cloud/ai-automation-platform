@@ -4,8 +4,8 @@ from cerebras.cloud.sdk import Cerebras
 
 app = Flask(__name__)
 
-# Configuración con la nueva llave de Cerebras
-client = Cerebras(api_key=os.environ.get("csk-3exjdmvt3v9393xvyxcwd8vf6tetmvdkh4xwepwkknkndymc"))
+# CONFIGURACIÓN SEGURA: No pongas la clave csk- aquí o te banearán
+client = Cerebras(api_key=os.environ.get("CEREBRAS_API_KEY"))
 
 SYSTEM_PROMPT = """
 Eres AI AUTOMATION, el núcleo de IA del Proyecto Overlord. 
